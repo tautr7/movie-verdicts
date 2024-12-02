@@ -15,7 +15,7 @@ if (!isset($_GET['tmdb_id'])) {
 
 $tmdb_id = $_GET['tmdb_id'];
 $movieModel = new Movie($pdo);
-$movie = $movieModel->getMovieWithReviews($tmdb_id);
+$movie = $movieModel->getMovieById($tmdb_id);
 
 if (!$movie) {
     die('Movie not found.');
@@ -23,8 +23,47 @@ if (!$movie) {
 
 include __DIR__ . '/includes/templates/header.php';
 
+// Add Font Awesome for star icons
 echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">';
+// Add CSS for star rating system
+echo '<style>
+    .star-rating {
+        direction: rtl;
+        display: inline-block;
+        padding: 20px;
+    }
 
+    .star-rating input {
+        display: none;
+    }
+
+    .star-rating label {
+        color: #bbb;
+        cursor: pointer;
+        font-size: 24px;
+        padding: 0 3px;
+    }
+
+    .star-rating label:hover,
+    .star-rating label:hover ~ label,
+    .star-rating input:checked ~ label {
+        color: #f90;
+    }
+
+    .review-item {
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .review-header {
+        margin-bottom: 10px;
+    }
+
+    .review-content {
+        line-height: 1.6;
+    }
+</style>';
 ?>
 
 <div class="container">
