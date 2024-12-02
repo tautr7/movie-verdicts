@@ -77,5 +77,21 @@ public function getMovieWithReviews($tmdbId)
     
     return $movie;
 }
+    public function searchMovies($query) {
+    $searchTerm = '%' . $query . '%';
+    $sql = "SELECT DISTINCT m.* 
+            FROM movies m 
+            LEFT JOIN movie_genres mg ON m.tmdb_id = mg.movie_id 
+            LEFT JOIN genres g ON mg.genre_id = g.id 
+            WHERE m.title LIKE :query 
+            OR m.overview LIKE :query 
+            OR g.name LIKE :query 
+            ORDER BY m.title";
+            
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->bindParam(':query', $searchTerm);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 }
 ?>
