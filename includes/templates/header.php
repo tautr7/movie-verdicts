@@ -48,6 +48,16 @@
                             <li><a href="register.php">Register</a></li>
                         <?php endif; ?>
                     </ul>
+                    <form class="navbar-form navbar-right" action="search.php" method="GET">
+    <div class="input-group">
+        <input type="text" name="q" class="form-control" placeholder="Search movies..." required>
+        <span class="input-group-btn">
+            <button type="submit" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+        </span>
+    </div>
+</form>
 
                 </div>
             </div>
