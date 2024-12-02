@@ -15,7 +15,7 @@ if (!isset($_GET['tmdb_id'])) {
 
 $tmdb_id = $_GET['tmdb_id'];
 $movieModel = new Movie($pdo);
-$movie = $movieModel->getMovieById($tmdb_id);
+$movie = $movieModel->getMovieWithReviews($tmdb_id);
 
 if (!$movie) {
     die('Movie not found.');
@@ -89,12 +89,35 @@ include __DIR__ . '/includes/templates/header.php';
     </div>
     <div class="row mt-5">
         <div class="col-sm-12">
-            <div class="panel panel-info">
-                <div class="panel-heading">User Reviews</div>
-                <div class="panel-body">
-                    <p>No reviews yet. Be the first to review this movie!</p>
+           <div class="panel panel-info">
+    <div class="panel-heading">
+        User Reviews 
+        <?php if ($movie['average_rating']): ?>
+            <span class="pull-right">Average Rating: <?php echo number_format($movie['average_rating'], 1); ?> / 5</span>
+        <?php endif; ?>
+    </div>
+    <div class="panel-body">
+        <?php if (!empty($movie['reviews'])): ?>
+            <?php foreach ($movie['reviews'] as $review): ?>
+                <div class="review-item mb-3">
+                    <div class="review-header">
+                        <strong><?php echo htmlspecialchars($review['email']); ?></strong>
+                        <span class="text-muted"> - <?php echo date('F j, Y', strtotime($review['created_at'])); ?></span>
+                        <?php if ($review['rating']): ?>
+                            <span class="pull-right">Rating: <?php echo $review['rating']; ?>/5</span>
+                        <?php endif; ?>
+                    </div>
+                    <div class="review-content mt-2">
+                        <?php echo htmlspecialchars($review['review_text']); ?>
+                    </div>
+                    <hr>
                 </div>
-            </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>No reviews yet. Be the first to review this movie!</p>
+        <?php endif; ?>
+    </div>
+</div>
         </div>
     </div>
 </div>
