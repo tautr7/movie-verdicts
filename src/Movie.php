@@ -45,5 +45,37 @@ class Movie
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+public function getMovieWithReviews($tmdbId)
+{
+    // Get movie details
+    $movie = $this->getMovieById($tmdbId);
+    
+    if (!$movie) {
+        return null;
+    }
+    
+    // Get reviews with user info and ratings
+    $sql = "SELECT r.review_text, r.created_at, u.email, rt.rating 
+            FROM reviews r 
+            JOIN users u ON r.user_id = u.id 
+            LEFT JOIN ratings rt ON r.user_id = rt.user_id AND r.movie_id = rt.movie_id 
+            WHERE r.movie_id = :tmdb_id 
+            ORDER BY r.created_at DESC";
+    
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->bindParam(':tmdb_id', $tmdbId, PDO::PARAM_INT);
+    $stmt->execute();
+    
+    $movie['reviews'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Get average rating
+    $sql = "SELECT AVG(rating) as average_rating FROM ratings WHERE movie_id = :tmdb_id";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->bindParam(':tmdb_id', $tmdbId, PDO::PARAM_INT);
+    $stmt->execute();
+    $movie['average_rating'] = $stmt->fetch(PDO::FETCH_ASSOC)['average_rating'];
+    
+    return $movie;
+}
 }
 ?>
