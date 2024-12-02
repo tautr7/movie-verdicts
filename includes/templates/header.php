@@ -41,7 +41,8 @@
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="index.php">Movies</a></li>
                         <?php if (isset($_SESSION['user'])): ?>
-                        <li><a href="favorites.php">My Favorites</a></li>    
+                        <li><a href="favorites.php">My Favorites</a></li> 
+                        <li><a href="profile.php">My Profile</a></li>
                         <li><a href="logout.php">Logout</a></li>
                         <?php else: ?>
                             <li><a href="login.php">Login</a></li>
