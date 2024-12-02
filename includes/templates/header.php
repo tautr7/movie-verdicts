@@ -43,6 +43,7 @@
                         <?php if (isset($_SESSION['user'])): ?>
                         <li><a href="favorites.php">My Favorites</a></li> 
                         <li><a href="profile.php">My Profile</a></li>
+                        <li><a href="my-reviews.php">My Reviews</a></li>
                         <li><a href="logout.php">Logout</a></li>
                         <?php else: ?>
                             <li><a href="login.php">Login</a></li>
